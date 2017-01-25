@@ -1,0 +1,8 @@
+#makefile to compile multiple files
+
+maths : mymath.c main.c mymath.h
+	gcc -Wall mymath.c main.c -o maths
+	
+clean :
+	rm maths *.out *.exe	
+	

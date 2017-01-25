@@ -1,0 +1,4 @@
+
+BINARY=gcc
+
+compile : hello

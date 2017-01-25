@@ -1,0 +1,21 @@
+#makefile to compile multiple files : using patterns
+
+#user defined variables
+CC = gcc
+CFLAGS = -Wall
+BINARY = maths
+OBJ = mymath.o main.o 
+
+$(BINARY) : $(OBJ) 
+	$(CC) $(CFLAGS) $(OBJ) -o $@
+# $@ is an inbuilt (automatic) variable that gives the name of the target
+
+%.o : %.c %.h
+	$(CC) $(CFLAGS) $< -c 
+	
+# $< is an inbuilt (automatic) variable that gives 
+# the name of the first (or only) prerequisite.
+
+clean :
+	rm $(BINARY) *.out *.exe *.o	
+	

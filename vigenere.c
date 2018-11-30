@@ -1,55 +1,88 @@
-/*
-   vigenere.c
-
-   Sample program for COMP1917 Lab 8
-*/
-
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+#include <conio.h>
 
-#include "vigenere.h"
+void vigenereCipher(char *,char *);
+void encipher();
+void decipher();
 
-#define MAX_COL  80
+void main()
 
-void encrypt( int ch )
 {
-  /*
-    These variables are declared "static" because they need to
-    keep their values from one call of encrypt() to another.
-    They will be initialized the first time encrypt() is called.
-    After that, they will keep the value from the previous call.
-  */
-  static char *p = key;
-  static int col = 1;
-  int i,j,k;
+//clrscr();
 
-  if( isalpha(ch)) {
-    /*
-      convert all characters to lowercase,
-      perform vigenere encoding
-      and print encoded character
-    */
-    i = tolower(ch) - 'a';
-    j = tolower(*p) - 'a';
-    k = ( i + j ) % 26;
-    ch= k + 'a';
-    putchar( ch );
-    /*
-      if we have filled a row,
-      print newline and start a new row
-    */
-    col++;
-    if( col == MAX_COL ) {
-      putchar( '\n' );
-      col = 1;
-    }
-    /*
-      move to next character of key.
-      if we have reached end of key, go back to beginning
-    */
-    p++;
-    if( *p == '\0' ) {
-         p = key;
-    }
-  }
+     int choice;
+     //loop takes choice from user and calles appropriate function
+     while(1)
+     {
+	  printf(" press 1 to Encrypt Text");
+	  printf(" \n press 2 Decrypt Text");
+	  printf("\n press 3 to Exit");
+	  printf("\nEnter Your Choice : ");
+	  scanf("%d",&choice);
+	  fflush(stdin);
+	  if(choice == 3)
+	       exit(0);
+	  else if(choice == 1)
+	  {
+	       encipher();
+	       }
+	  else if(choice == 2)
+	       decipher();
+	  else
+	       printf("Please Enter Valid Option.");
+     }
+
+     getch();
+}
+
+void encipher()
+{
+     unsigned int i,j;
+     char input[257],key[33];
+     printf("Enter Text to be Encrypted [Max. 256 characters/ only alphabets]: ");
+     gets(input);
+     printf("Enter Encryption Key [Max. 32 Characters/ only aphabets]: ");
+     gets(key);
+     for(i=0,j=0;i<strlen(input);i++,j++)
+     {
+	  //repeat the key if you are at end of it.
+	  if(j>=strlen(key))
+	  {
+	       j=0;
+	  }
+
+	  //actual logic -> character from input + character from key % 26 is encrypted charater
+	  printf("%c",65+(((toupper(input[i])-65)+(toupper(key[j])-65))%26));
+     }
+     printf("\n");
+}
+
+void decipher()
+{
+     unsigned int i,j;
+     char input[257],key[33];
+     int value;
+     printf("Enter Text to be Decrypted [Max. 256 characters/ only alphabets]:- ");
+     gets(input);
+     printf("Enter Decryption Key [Max. 32 Characters/ only aphabets]: ");
+     gets(key);
+     for(i=0,j=0;i<strlen(input);i++,j++)
+     {
+	  //repeat the key if you are at end of it.
+	  if(j>=strlen(key))
+	  {
+	       j=0;
+	  }
+	  //similar to encipher only difference is you need to subtract
+	  value = (toupper(input[i])-64)-(toupper(key[j])-64);
+	  //make positive if value is negative.
+	  if( value < 0)
+	  {
+	       value = value * -1;
+	  }
+	  printf("%c",65 + (value % 26));
+     }
+  printf("\n");
 }
